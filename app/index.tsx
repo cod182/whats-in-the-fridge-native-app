@@ -6,13 +6,12 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { StatusBar } from 'expo-status-bar'
 import icon from '../assets/images/adaptive-icon.png'
 import logo from '../assets/images/witf-logo.webp'
-
-// import { useGlobalContext } from '@/context/globalProvider';
+import { useGlobalContext } from '@/context/globalProvider';
 
 export default function App() {
-  // const { isLoading, isLoggedIn } = useGlobalContext();
+  const { isLoading, isLoggedIn } = useGlobalContext();
 
-  // if (!isLoading && isLoggedIn) return <Redirect href='/home' />
+  if (!isLoading && isLoggedIn) return <Redirect href='/tabs/profile' />
 
   return (
     <SafeAreaView className='h-full bg-primary'>
@@ -26,7 +25,7 @@ export default function App() {
 
           <View className='relative mt-5'>
             {/* <Image source={logo} className='w-auto h-[100px]' resizeMode='contain' /> */}
-            <Image source={icon} className='w-auto h-[200px]' resizeMode='contain' />
+            <Image source={icon} className='max-w-[200px] max-h-[200px] bg-gray-100/20 rounded-full' resizeMode='contain' />
           </View>
 
           <View className='justify-center flex-col items-center border-black border-[1px] rounded-lg p-4 bg-gray-400/50 mt-4'>

@@ -3,13 +3,14 @@ import * as Google from 'expo-auth-session/providers/google';
 import * as WebBrowser from 'expo-web-browser';
 
 import { Alert, Image, Pressable, ScrollView, Text, View } from 'react-native'
-import { Link, router } from 'expo-router';
+import { Link, Redirect, router } from 'expo-router';
 import React, { useEffect, useState } from 'react'
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import CustomButton from '@/components/CustomButton';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import icon from '../../assets/images/adaptive-icon.png'
+import { useGlobalContext } from '@/context/globalProvider';
 
 WebBrowser.maybeCompleteAuthSession();
 
@@ -24,7 +25,9 @@ const SignIn = () => {
     iosClientId: process.env.EXPO_PUBLIC_IOS_CLIENTID,
     webClientId: process.env.EXPO_PUBLIC_WEB_CLIENTID
   });
+  const { isLoading, isLoggedIn } = useGlobalContext();
 
+  if (!isLoading && isLoggedIn) return router.replace('/profile');
 
   useEffect(() => {
     handleSignInWithGoogle()
@@ -35,7 +38,6 @@ const SignIn = () => {
 
   const getUserInfo = async (token: string) => {
     if (!token) return;
-
     try {
       const response = await fetch('https://www.googleapis.com/userinfo/v2/me',
         {
@@ -44,11 +46,10 @@ const SignIn = () => {
           }
         }
       )
-
       const user = await response.json();
       await AsyncStorage.setItem('@user', JSON.stringify(user));
-    } catch (error) {
-      console.log(error)
+    } catch (error: any) {
+      Alert.alert('Error', error.message);
     }
   }
 
@@ -57,12 +58,13 @@ const SignIn = () => {
     const user = await AsyncStorage.getItem('@user');
 
     if (!user) {
-      if (response?.type === 'success' && response?.authentication?.accessToken) {
-
-        await getUserInfo(response?.authentication?.accessToken)
+      if (response?.type === 'success') {
+        await getUserInfo(response!.authentication!.accessToken)
+        router.replace('/profile') // redirect to profile
       }
     } else {
       setUserInfo(JSON.parse(user));
+      router.replace('/profile') // redirect to profile
     }
   }
   return (
@@ -78,11 +80,6 @@ const SignIn = () => {
           <View className='justify-center w-full px-4'>
             <Text>{JSON.stringify(userInfo)}</Text>
 
-            <CustomButton
-              title='Remove User'
-              handlePress={() => AsyncStorage.removeItem('@user')}
-              containerStyles=''
-            />
             <Text className='text-2xl text-white text-semibold font-psemibold'>Choose a provider below</Text>
 
             <CustomButton
