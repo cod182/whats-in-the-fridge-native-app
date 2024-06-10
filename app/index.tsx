@@ -17,7 +17,7 @@ export default function App() {
   return (
     <SafeAreaView className='h-full bg-primary'>
       <ScrollView
-        contentContainerStyle={{ height: "100%" }}
+        className='h-full'
       >
         <View
           className='w-full justify-center items-center min-h-[85vh] px-4'
@@ -40,7 +40,7 @@ export default function App() {
           </View>
 
           <View>
-            <CustomButton title='Login/Register' containerStyles='px-4 py-2 my-4 w-[200px]' textStyles='text-gray-300' handlePress={() => { }} />
+            <CustomButton title='Login/Register' containerStyles='px-4 py-2 my-4 w-[200px]' textStyles='text-gray-300' handlePress={() => { router.push('/sign-in') }} />
           </View>
 
         </View>

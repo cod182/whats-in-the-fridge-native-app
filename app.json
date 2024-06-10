@@ -5,7 +5,7 @@
         "version": "1.0.0",
         "orientation": "portrait",
         "icon": "./assets/images/icon.png",
-        "scheme": "myapp",
+        "scheme": "whats-in-the-fridge-native-app",
         "userInterfaceStyle": "automatic",
         "splash": {
             "image": "./assets/images/splash.png",
@@ -13,13 +13,15 @@
             "backgroundColor": "#ffffff"
         },
         "ios": {
-            "supportsTablet": true
+            "supportsTablet": true,
+            "bundleIdentifier": "com.hellocodie.witf"
         },
         "android": {
             "adaptiveIcon": {
                 "foregroundImage": "./assets/images/adaptive-icon.png",
                 "backgroundColor": "#ffffff"
-            }
+            },
+            "package": "com.hellocodie.witf"
         },
         "web": {
             "bundler": "metro",
@@ -31,6 +33,14 @@
         ],
         "experiments": {
             "typedRoutes": true
+        },
+        "extra": {
+            "router": {
+                "origin": false
+            },
+            "eas": {
+                "projectId": "883115e4-cd61-4ace-8de6-f10dbcfdde42"
+            }
         }
     }
 }
